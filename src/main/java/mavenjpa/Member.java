@@ -1,15 +1,24 @@
 package mavenjpa;
 
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class Member {
 
-    @Id
+    @Id @GeneratedValue
+    @Column(name = "MEMBER_ID")
     private long id;
-    private String name;
+    @Column(name = "USERNAME")
+    private String username;
+
+/*    @Column(name = "TEAM_ID")
+    private Long teamId;*/
+
+    //멤버 입장에선 many이지만 팀은 1개니까
+    @ManyToOne
+    @JoinColumn(name="TEAM_ID")
+    private Team team;
 
     public long getId() {
         return id;
@@ -19,11 +28,27 @@ public class Member {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getUsername() {
+        return username;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+   /* public Long getTeamId() {
+        return teamId;
+    }
+
+    public void setTeamId(Long teamId) {
+        this.teamId = teamId;
+    }*/
+
+    public Team getTeam() {
+        return team;
+    }
+
+    public void setTeam(Team team) {
+        this.team = team;
     }
 }
