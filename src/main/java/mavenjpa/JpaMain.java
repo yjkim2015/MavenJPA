@@ -4,6 +4,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
+import java.util.List;
 
 public class JpaMain {
     public static void main(String[] args) {
@@ -84,15 +85,27 @@ public class JpaMain {
             member.setTeam(team);
 
             em.persist(member);
+            em.flush();
+            em.clear();
 
             //영속성 컨텍스트가 아닌 db에서 강제로 끌어와서 보고싶으면
             //em.flush();
             //em.clear();
             Member findMember = em.find(Member.class, member.getId());
 
+            System.out.println("findMember : " + findMember);
+
             Team findTeam = findMember.getTeam();
 
-            System.out.println("findTeam : " + findTeam.getName());
+            System.out.println("findTeam : " + findTeam);
+
+            List<Member> members = findMember.getTeam().getMembers();
+            System.out.println("members : " + members);
+
+
+            for (Member m : members) {
+                System.out.println("m = " + m.getUsername());
+            }
 
 
             tx.commit();
