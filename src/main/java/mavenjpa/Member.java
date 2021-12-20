@@ -50,5 +50,7 @@ public class Member {
 
     public void setTeam(Team team) {
         this.team = team;
+        //양방향 연관관계 양쪽 설정 [연관 관계 편의 메소드]
+        team.getMembers().add(this);
     }
 }

@@ -88,9 +88,16 @@ public class JpaMain {
             em.flush();
             em.clear();
 
-            //영속성 컨텍스트가 아닌 db에서 강제로 끌어와서 보고싶으면
+            //역방향(주인이 아닌 방향)만 연관관계 설정
+            //team.getMembers().add(member);
+
+           //영속성 컨텍스트가 아닌 db에서 강제로 끌어와서 보고싶으면
             //em.flush();
             //em.clear();
+
+            /*
+                연관관계의 주인은 외래 키의 위치를 기준으로 정해야한다.
+             */
             Member findMember = em.find(Member.class, member.getId());
 
             System.out.println("findMember : " + findMember);
