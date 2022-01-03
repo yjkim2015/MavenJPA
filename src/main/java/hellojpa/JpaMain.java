@@ -1,4 +1,4 @@
-package jpabook.jpashop;
+package hellojpa;
 
 import jpabook.jpashop.domain.Order;
 import jpabook.jpashop.domain.OrderItem;
@@ -18,9 +18,20 @@ public class JpaMain {
         tx.begin();
 
         try {
-            Order order = new Order();
+            Movie movie = new Movie();
+            movie.setDirector("aaaa");
+            movie.setActor("bbbb");
+            movie.setName("바람과함께 사라지다");
+            movie.setPrice(10000);
 
-            order.addOrderItem(new OrderItem());
+            em.persist(movie);
+
+            em.flush();
+            em.close();
+
+            Movie findMovie = em.find(Movie.class, movie.getId());
+
+            System.out.println("findMovie : " + findMovie);
         }
         catch (Exception ex) {
             ex.getStackTrace();
