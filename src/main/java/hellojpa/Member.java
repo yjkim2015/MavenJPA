@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class Member {
+public class Member extends BaseEntity {
 
     @Id @GeneratedValue
     @Column(name = "MEMBER_ID")
@@ -20,7 +20,27 @@ public class Member {
     private Long teamId;*/
 
     //멤버 입장에선 many이지만 팀은 1개니까
-    @ManyToOne
+    //fetch type lazy인 경우 프록시 객체를 조회한다. 즉, 멤버 클래스만 디비에서 조회한다.
+    //즉, team의 데이터를 실제로 사용하기 위해 쓰는순간 쿼리가 발생한다.
+
+    /*
+        member와 team의 조회가 함께 자주 사용된다면 성능상의 이점을 가져가기 위해
+        Lazy말고 Eager를 써라. 그렇다면 조인을 사용해 가져온다.
+
+        프록시와 즉시로딩 주의
+
+        실무에서 지연로딩만 사용해라!!
+
+        즉시 로딩을 적용하면 예상하지 못한 SQL이 발생한다.
+
+        즉시 로딩은 JPQL에서 N+1 문제를 일으킨다.
+
+        em.find에서는 pk위주로 찾아서 jpa가 알아서 최적화를 한다..
+        but jpql은 sql그대로를 번역하기 떄문에... eager로 해도 쿼리가 각각 나간다.
+
+        @ManyToOne, @OneToOne은 기본이 즉시 로딩 -> Lazy로 설정
+     */
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="TEAM_ID", insertable = false, updatable = false)
     private Team team;
 
