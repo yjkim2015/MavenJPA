@@ -5,6 +5,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import static javax.persistence.FetchType.*;
+
 @Entity
 @Table(name="ORDERS")
 public class Order  extends BaseEntity {
@@ -16,16 +18,16 @@ public class Order  extends BaseEntity {
    /* @Column(name="MEMBER_ID")
     private Long memberId;*/
 
-    @ManyToOne
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(name="MEMBER_ID")
     private Member member;
 
-    @OneToOne
+    @OneToOne(fetch = LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "DELIVERY_ID")
     private Delivery delivery;
 
     //없어도 아무 문제가 되지않는다.
-    @OneToMany(mappedBy = "order")
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderItem> orderItems = new ArrayList<>();
 
     private LocalDateTime orderDate;

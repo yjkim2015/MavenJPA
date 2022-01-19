@@ -105,7 +105,7 @@ public class JpaMain {
             em.persist(child2);
 
 
-            */
+
 
             em.persist(parent);
             em.flush();
@@ -114,6 +114,64 @@ public class JpaMain {
 
             Parent findParent = em.find(Parent.class, parent.getId());
             findParent.getChildList().remove(0);
+                      */
+
+
+            /*
+                값 타입 컬렉션 사용
+
+                Member member = new Member();
+                member.setUsername("member1");
+                member.setHomeAddress(new Address("homeCity", "street", "10000"));
+
+                member.getFavoriteFoods().add("치킨");
+                member.getFavoriteFoods().add("족발");
+                member.getFavoriteFoods().add("피자");
+
+
+                member.getAddressHistory().add(new Address("old1", "street", "10000");
+                member.getAddressHistory().add(new Address("old2", "street", "10000");
+
+                em.persist(member);
+
+                em.flush();
+                em.clear();
+
+                Member findMember = em.find(Member.class, member.getId());
+                List<Address> addressHistory = findMember.getAddressHistory();
+                for (Address address : addressHistory) {
+                    System.out.println("address : " + address);
+                }
+
+                값 타임 컬렉션은 기본이 지연 로딩이다.
+
+                // homeCity -> newCity 변경 불가
+                findMember.getHomeAddress().setCity("");
+
+                Address a = findMember.getHomeAddress();
+                findMember.setHomeAddress(new Address("newCity", a.getStreet, a.getZipCode());
+
+                //치킨 -> 한식 변경
+                findMember.getFavoriteFoods().remove("치킨");
+                findMember.getFavoriteFoods().add("한식");
+
+                findMember.getAddressHistory().remove("new Address("old1", "street","10000");
+                findMember.getAddressHistory().remove("new Address("newCity1", "street","10000");
+
+
+                값 타입 컬렉션에 변경 사항이 발생하면 주인 엔티티와 연관된 모든 데이터를 삭제하고,
+                값 타입 컬렉션에 있는 현재 값을 모두 다시 저장한다.
+
+                결론 : 값 타입 컬렉션 쓰지말고 대안으로 일대다 관계를 고려해라
+                @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+
+
+                member.getAddressHistory().add(new AddressEntity("old1", "street", "10000"));
+                member.getAddressHistory().add(new AddressEntity("old2", "street", "10000"));
+
+                값 타입은 정말 값 타입이라 판단될 떄만 사용
+             */
+            
 
             tx.commit();
         }

@@ -28,7 +28,7 @@ public class Parent {
 
         orphanRemoval 고아객체 삭제
         * 참조하는 곳이 하나일 때 사용해야함
-       
+
      */
     @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Child> childList = new ArrayList<>();
